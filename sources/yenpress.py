@@ -112,13 +112,13 @@ def _find_novels(soup: BeautifulSoup, year: int, month: int) -> list:
         name = name.split(' (novel')[0]
 
         str_date = novel.find('p').text
-        str_date = str_date.replace('\n', '')
+        str_date = str_date.replace('\n', ' ')
         str_date = str_date.split()[0]
         try:
             int_date = int(str_date)
         except ValueError:
             int_date = 1
-            logger.error('Could not get date as integer')
+            logger.error(f'Could not get date as integer from "{str_date}"')
         release_date = datetime(year=year, month=month, day=int_date).strftime('%Y-%m-%d')
 
         new_release = {
