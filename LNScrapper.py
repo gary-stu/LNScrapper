@@ -1,9 +1,9 @@
 """
 TODO
 """
+import shutil
 from argparse import ArgumentParser, Namespace
 from logging import getLogger, Formatter, StreamHandler, DEBUG, INFO
-from os import system
 from subprocess import Popen
 from time import sleep
 
@@ -54,8 +54,14 @@ def main(_args: Namespace):
         logger.info('We will generate a "firefox.selenium" profile in the "./profiles" folder and open a new browser')
         logger.info('If you have never actively set a profile as default, it may switch the default profile.')
         logger.info('If needed, to restore the previous profile, please go to about:profiles on Firefox')
-        system('cd profiles')
-        system('firefox -profile "firefox.selenium ."')
+
+        logger.debug('Creating the new profile')
+        process = Popen('firefox -profile "firefox.selenium ."')
+        sleep(3)
+        process.kill()
+        sleep(3)
+        logger.debug('Moving new profile in "profiles" folder')
+        shutil.move('firefox.selenium', 'profiles')
         exit(0)
 
     if _args.challenge:
